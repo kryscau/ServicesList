@@ -1,0 +1,153 @@
+<?php
+
+
+// Message d'erreur/succès
+$message = '';
+
+// Traitement du formulaire
+if (isset($_POST['submit'])) {
+    $new_password = $_POST['password'];
+    
+    if (empty($new_password)) {
+        $message = '<div style="color: red; margin-bottom: 15px;">Le mot de passe ne peut pas être vide!</div>';
+    } else {
+        // Générer le hash avec bcrypt
+        $hash = password_hash($new_password, PASSWORD_BCRYPT);
+        
+        try {
+            // Connexion à la base de données
+            $pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8mb4", $db_user, $db_pass);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            // Vérifier si la table admin existe
+            $tables = $pdo->query("SHOW TABLES LIKE 'admin'")->fetchAll();
+            
+            if (count($tables) === 0) {
+                // Créer la table admin si elle n'existe pas
+                $pdo->exec("CREATE TABLE IF NOT EXISTS `admin` (
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `password_hash` varchar(255) NOT NULL,
+                    PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+                
+                // Insérer le nouveau mot de passe
+                $stmt = $pdo->prepare("INSERT INTO admin (password_hash) VALUES (?)");
+                $stmt->execute([$hash]);
+            } else {
+                // Vérifier si un enregistrement existe déjà
+                $count = $pdo->query("SELECT COUNT(*) FROM admin")->fetchColumn();
+                
+                if ($count > 0) {
+                    // Mettre à jour le mot de passe existant
+                    $stmt = $pdo->prepare("UPDATE admin SET password_hash = ? WHERE id = 1");
+                    $stmt->execute([$hash]);
+                } else {
+                    // Insérer un nouveau mot de passe
+                    $stmt = $pdo->prepare("INSERT INTO admin (password_hash) VALUES (?)");
+                    $stmt->execute([$hash]);
+                }
+            }
+            
+            $message = '<div style="color: green; margin-bottom: 15px;">
+                <p><strong>Mot de passe mis à jour avec succès!</strong></p>
+                <p>Votre nouveau mot de passe: <strong>' . htmlspecialchars($new_password) . '</strong></p>
+                <p>Hash généré: <code>' . $hash . '</code></p>
+                <p><strong>IMPORTANT:</strong> Supprimez ce fichier immédiatement après utilisation!</p>
+            </div>';
+            
+        } catch (PDOException $e) {
+            $message = '<div style="color: red; margin-bottom: 15px;">Erreur: ' . $e->getMessage() . '</div>';
+        }
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mise à jour du mot de passe admin</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        h1 {
+            color: #4f46e5;
+            margin-bottom: 20px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4338ca;
+        }
+        .warning {
+            background-color: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 10px 15px;
+            margin: 20px 0;
+            color: #b91c1c;
+        }
+        code {
+            background-color: #f1f5f9;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mise à jour du mot de passe admin</h1>
+    
+    <div class="warning">
+        <strong>ATTENTION:</strong> Ce fichier est destiné à un usage unique. Supprimez-le immédiatement après avoir mis à jour votre mot de passe!
+    </div>
+    
+    <?php echo $message; ?>
+    
+    <div class="card">
+        <form method="post">
+            <div>
+                <label for="password">Nouveau mot de passe admin:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" name="submit">Mettre à jour le mot de passe</button>
+        </form>
+    </div>
+    
+    <div class="warning" style="margin-top: 20px;">
+        <strong>RAPPEL:</strong> N'oubliez pas de supprimer ce fichier après utilisation!
+    </div>
+</body>
+</html>

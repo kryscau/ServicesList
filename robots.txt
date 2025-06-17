@@ -1,0 +1,11 @@
+# robots.txt
+# Prevents all robots from accessing sensitive areas
+
+User-agent: *
+Disallow: /admin/      # Block access to the admin folder
+Disallow: /_conf/      # Blocks access to the configuration folder
+
+# Optional: you can add a link to your sitemap to help bots crawl the rest efficiently.
+# Sitemap: https://kvs.fyi/sitemap.xml
+
+# End of file
