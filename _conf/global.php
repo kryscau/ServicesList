@@ -1,5 +1,6 @@
 <?php
 
+include_once __DIR__ . '/protect.php';
 include_once __DIR__ . '/env.php';
 
 $config['site'] = [

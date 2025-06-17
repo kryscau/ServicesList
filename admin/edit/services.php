@@ -3,14 +3,6 @@ session_start();
 include_once("../_conf/global.php");
 include_once("../_conf/db.php");
 
-// Connecting to the database
-try {
-    $pdo = new PDO($db['dsn'], $db['user'], $db['pass']);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Database connection error: " . $e->getMessage());
-}v
-
 // Error and success messages
 $error = '';
 $success = '';

@@ -2,14 +2,6 @@
 include_once("./_conf/global.php");
 include_once("./_conf/db.php");
 
-// Connecting to the database
-try {
-    $pdo = new PDO($db['dsn'], $db['user'], $db['pass']);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Database connection error: " . $e->getMessage());
-}
-
 // Retrieving services from the database
 try {
     $stmt = $pdo->query("SELECT * FROM services ORDER BY order_num ASC");
@@ -29,7 +21,7 @@ $edit_mode = isset($_GET['edit']);
 
 // If you are in edit mode, redirect to edit-services
 if ($edit_mode) {
-    header('Location: admin/edit-services');
+    header('Location: admin/edit/services');
     exit;
 }
 
