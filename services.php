@@ -21,7 +21,7 @@ $edit_mode = isset($_GET['edit']);
 
 // If you are in edit mode, redirect to edit-services
 if ($edit_mode) {
-    header('Location: admin/edit/services');
+    header('Location: admin/edit/services'); 
     exit;
 }
 

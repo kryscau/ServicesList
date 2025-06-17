@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once("../_conf/global.php");
-include_once("../_conf/db.php");
+include_once("../../_conf/global.php");
+include_once("../../_conf/db.php");
 
 // Error and success messages
 $error = '';
@@ -143,7 +143,7 @@ $robots = "noindex, nofollow";
 	<meta property="twitter:description" content="<?php echo $description; ?>" />
 	<meta property="twitter:image" content="<?php echo $meta_image; ?>" />
 	<meta name="robots" content="<?php echo $robots; ?>" />
-    <link rel="stylesheet" type="text/css" href="assets/css/edit-services.css">
+    <link rel="stylesheet" type="text/css" href="/admin/assets/css/edit-services.css">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- jQuery for drag and drop functionality -->
@@ -306,6 +306,6 @@ $robots = "noindex, nofollow";
         <a href="/services" class="back-link">&larr; Back to home page</a>
     </div>
     
-    <script src="assets/js/icon-selector.js"></script>
+    <script src="/admin/assets/js/icon-selector.js"></script>
 </body>
 </html>
