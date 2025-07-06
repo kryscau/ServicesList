@@ -12,7 +12,7 @@ $db = [
     'port' => $env['DB_PORT'] ?? '3306',
 ];
 
-if (!empty($config['site']['ynh_data']) && $config['site']['ynh_data'] === false) {
+if ($config['site']['ynh_data'] === false) {
     if (!$db['host'] || !$db['name'] || !$db['user']) {
         die("DB configuration error: missing parameters. Please check your environment variables.");
     }

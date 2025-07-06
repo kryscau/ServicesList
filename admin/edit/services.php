@@ -2,6 +2,7 @@
 session_start();
 include_once("../../_conf/global.php");
 include_once("../../_conf/db.php");
+include_once("../../_inc/if.ynh-mode.php");
 
 // Error and success messages
 $error = '';
@@ -9,6 +10,7 @@ $success = '';
 
 // Check if the user is logged in
 $is_logged_in = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
+
 
 // Processing the login form
 if (isset($_POST['login'])) {
@@ -105,6 +107,7 @@ if ($is_logged_in && isset($_POST['reorder'])) {
         $error = "Error during service reorganization: " . $e->getMessage();
     }
 }
+
 
 // Retrieving services from the database
 try {
