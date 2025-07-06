@@ -118,7 +118,7 @@ try {
 $title = $config['site']['name'];
 $description = "Internal system administration area of the ". $config['site']['name'] ." website.";
 $url = "https://". $config['site']['main_domain'] ."/services?edit";
-$meta_image = "https://". $config['site']['imgs_domain'] ."/-/WaWA7/FoRUmETa47.png/raw";
+$meta_image = "https://". $config['site']['imgs_domain'] ."/url/kvs-meta-img";
 $robots = "noindex, nofollow";
 ?>
 <!DOCTYPE html>

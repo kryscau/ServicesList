@@ -12,19 +12,23 @@ $db = [
     'port' => $env['DB_PORT'] ?? '3306',
 ];
 
-if (!$db['host'] || !$db['name'] || !$db['user']) {
-    die("DB configuration error: missing parameters. Please check your environment variables.");
-}
+if (!empty($config['site']['ynh_data']) && $config['site']['ynh_data'] === false) {
+    if (!$db['host'] || !$db['name'] || !$db['user']) {
+        die("DB configuration error: missing parameters. Please check your environment variables.");
+    }
 
-$db['dsn'] = 'mysql:host=' . $db['host'] . ';'
-           . 'port=' . $db['port'] . ';'
-           . 'dbname=' . $db['name'] . ';charset=utf8mb4';
+    $db['dsn'] = 'mysql:host=' . $db['host'] . ';'
+            . 'port=' . $db['port'] . ';'
+            . 'dbname=' . $db['name'] . ';charset=utf8mb4';
 
-try {
-    $pdo = new PDO($db['dsn'], $db['user'], $db['pass']);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Database connection error: " . $e->getMessage());
+    try {
+        $pdo = new PDO($db['dsn'], $db['user'], $db['pass']);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e) {
+        die("Database connection error: " . $e->getMessage());
+    }
+} else {
+    // Mode YunoHost : aucune connexion BDD, aucune variable $pdo
 }
 
 ?>

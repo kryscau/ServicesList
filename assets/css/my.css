@@ -94,6 +94,24 @@
             font-weight: 500;
         }
 
+.service-icon-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background: white;
+}
+
+/* En mode YunoHost : on réduit les logos pour éviter les débordements */
+body.ynh-mode .service-icon-img {
+    width: 38px;
+    height: 38px;
+    margin-bottom: 6px;
+    box-shadow: 0 0 0 1px #ccc;
+}
+
+
         .admin-link {
             position: fixed;
             bottom: 20px;

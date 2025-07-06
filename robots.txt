@@ -4,6 +4,8 @@
 User-agent: *
 Disallow: /admin/      # Block access to the admin folder
 Disallow: /_conf/      # Blocks access to the configuration folder
+Disallow: /_inc/       # Blacks access to the inc folder
+Disallow: /error/      # Blacks access to the error folder
 
 # Optional: you can add a link to your sitemap to help bots crawl the rest efficiently.
 # Sitemap: https://kvs.fyi/sitemap.xml
